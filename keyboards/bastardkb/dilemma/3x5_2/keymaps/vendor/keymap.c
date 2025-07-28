@@ -20,33 +20,33 @@
 #    include "timer.h"
 #endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-// enum combos {
-//     QW_ESC = 0,
-//     ER_TAB,
-//     AS_SHFT,
-//     ZX_CTRL,
-//     OP_BKSPC,
-//     LQUOT_SHFT,
-//     DOTSLSH_CTRL,
-// };
+enum combos {
+    QW_ESC = 0,
+    ER_TAB,
+    AS_SHFT,
+    ZX_CTRL,
+    OP_BKSPC,
+    LQUOT_SHFT,
+    DOTSLSH_CTRL,
+};
 
-// const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
-// const uint16_t PROGMEM er_combo[] = {KC_E, KC_R, COMBO_END};
-// const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
-// const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
-// const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
-// const uint16_t PROGMEM lquot_combo[] = {KC_L, KC_QUOT, COMBO_END};
-// const uint16_t PROGMEM dotslsh_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM er_combo[] = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
+const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
+const uint16_t PROGMEM lquot_combo[] = {KC_L, KC_QUOT, COMBO_END};
+const uint16_t PROGMEM dotslsh_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
 
-// combo_t key_combos[] = {
-//     [QW_ESC] = COMBO(qw_combo, KC_ESC),
-//     [ER_TAB] = COMBO(er_combo, KC_TAB),
-//     [AS_SHFT] = COMBO(as_combo, OS_LSFT),
-//     [ZX_CTRL] = COMBO(zx_combo, OS_LCTL),
-//     [OP_BKSPC] = COMBO(op_combo, KC_BSPC),
-//     [LQUOT_SHFT] = COMBO(lquot_combo, OS_RSFT),
-//     [DOTSLSH_CTRL] = COMBO(dotslsh_combo, OS_RCTL),
-// };
+combo_t key_combos[] = {
+    [QW_ESC] = COMBO(qw_combo, KC_ESC),
+    [ER_TAB] = COMBO(er_combo, KC_TAB),
+    [AS_SHFT] = COMBO(as_combo, OSM(MOD_LSFT)),
+    [ZX_CTRL] = COMBO(zx_combo, OSM(MOD_LCTL)),
+    [OP_BKSPC] = COMBO(op_combo, KC_BSPC),
+    [LQUOT_SHFT] = COMBO(lquot_combo, OSM(MOD_RSFT)),
+    [DOTSLSH_CTRL] = COMBO(dotslsh_combo, OSM(MOD_RCTL)),
+};
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
