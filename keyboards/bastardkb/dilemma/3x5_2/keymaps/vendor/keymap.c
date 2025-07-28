@@ -25,6 +25,7 @@ enum combos {
     ER_TAB,
     AS_SHFT,
     ZX_CTRL,
+    UI_DEL,
     OP_BKSPC,
     LQUOT_SHFT,
     DOTSLSH_CTRL,
@@ -34,6 +35,7 @@ const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
 const uint16_t PROGMEM er_combo[] = {KC_E, KC_R, COMBO_END};
 const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
 const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM ui_combo[] = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
 const uint16_t PROGMEM lquot_combo[] = {KC_L, KC_QUOT, COMBO_END};
 const uint16_t PROGMEM dotslsh_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
@@ -43,6 +45,7 @@ combo_t key_combos[] = {
     [ER_TAB] = COMBO(er_combo, KC_TAB),
     [AS_SHFT] = COMBO(as_combo, OSM(MOD_LSFT)),
     [ZX_CTRL] = COMBO(zx_combo, OSM(MOD_LCTL)),
+    [UI_DEL] = COMBO(ui_combo, KC_DEL),
     [OP_BKSPC] = COMBO(op_combo, KC_BSPC),
     [LQUOT_SHFT] = COMBO(lquot_combo, OSM(MOD_RSFT)),
     [DOTSLSH_CTRL] = COMBO(dotslsh_combo, OSM(MOD_RCTL)),
@@ -50,11 +53,11 @@ combo_t key_combos[] = {
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
+    LAYER_NUMERAL,
+    LAYER_SYMBOLS,
     LAYER_FUNCTION,
     LAYER_NAVIGATION,
     LAYER_POINTER,
-    LAYER_NUMERAL,
-    LAYER_SYMBOLS,
 };
 
 // Automatically enable sniping-mode on the pointer layer.
@@ -147,10 +150,10 @@ static uint16_t auto_pointer_layer_timer = 0;
  * `KC_DOT` is duplicated from the base layer.
  */
 #define LAYOUT_LAYER_NUMERAL                                                                  \
-    KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC, _______________DEAD_HALF_ROW_______________, \
-    KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL, ______________HOME_ROW_GACS_R______________, \
-     KC_DOT,    KC_1,    KC_2,    KC_3, KC_BSLS, _______________DEAD_HALF_ROW_______________, \
-                               KC_MINS,    KC_0, XXXXXXX, _______
+    _______________DEAD_HALF_ROW_______________, KC_MINS,    KC_7,    KC_8,    KC_9, QK_AREP, \
+    KC_LABK, KC_LPRN, KC_LBRC, KC_LCBR, KC_MINS, KC_PLUS,    KC_4,    KC_5,    KC_6, KC_SCLN, \
+    _______________DEAD_HALF_ROW_______________, KC_TILD,    KC_1,    KC_2,    KC_3, QK_REP,  \
+                               KC_MINS,    KC_0, XXXXXXX,    KC_0
 
 /**
  * \brief Symbols layer.
@@ -160,8 +163,8 @@ static uint16_t auto_pointer_layer_timer = 0;
  * `KC_RPRN`.
  */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
-    KC_LCBR, KC_AMPR, KC_ASTR, KC_LPRN, KC_RCBR, _______________DEAD_HALF_ROW_______________, \
-    KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, ______________HOME_ROW_GACS_R______________, \
+    KC_EXLM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, \
+    KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, KC_PLUS, KC_RCBR, KC_RBRC, KC_RPRN, KC_RABK, \
     KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, _______________DEAD_HALF_ROW_______________, \
                                 KC_GRV, KC_UNDS, _______, XXXXXXX
 
