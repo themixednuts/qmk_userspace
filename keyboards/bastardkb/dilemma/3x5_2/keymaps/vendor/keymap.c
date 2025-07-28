@@ -20,9 +20,6 @@
 #    include "timer.h"
 #endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-#define COMBO_TERM 40
-#define EXTRA_SHORT_COMBOS
-
 enum combos {
     QW_ESC = 0,
     ER_TAB,
