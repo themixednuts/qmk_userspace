@@ -102,7 +102,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #endif // !POINTING_DEVICE_ENABLE
 
 // clang-format off
-/** \brief QWERTY layout (3 rows, 10 columns) with home row mods. */
+/** \brief Base layer with home row mods. */
 #define LAYOUT_LAYER_BASE                                                                     \
        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
    LALT_T(KC_A), LCTL_T(KC_S), LSFT_T(KC_D), KC_F,    KC_G,    KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), KC_QUOT, \
@@ -132,6 +132,7 @@ static uint16_t auto_pointer_layer_timer = 0;
  * column. App is on the tertiary thumb key and other thumb keys are duplicated
  * from the base layer to enable auto-repeat.
  */
+/** \brief Function layer with F-keys. */
 #define LAYOUT_LAYER_FUNCTION                                                                 \
     _______________DEAD_HALF_ROW_______________, KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, \
     ______________HOME_ROW_GACS_L______________, KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, \
@@ -153,6 +154,7 @@ static uint16_t auto_pointer_layer_timer = 0;
  * caps lock and insert on the inner column. Thumb keys are duplicated from the
  * base layer to avoid having to layer change mid edit and to enable auto-repeat.
  */
+/** \brief Navigation layer with cursor keys. */
 #define LAYOUT_LAYER_NAVIGATION                                                               \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
     ______________HOME_ROW_GACS_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
@@ -179,6 +181,7 @@ static uint16_t auto_pointer_layer_timer = 0;
  * chording when using mods with shifted symbols. `KC_LPRN` is duplicated next to
  * `KC_RPRN`.
  */
+/** \brief Symbols layer with arrow keys on bottom row. */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     KC_EXLM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, \
     KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, KC_PLUS, KC_RCBR, KC_RBRC, KC_RPRN, KC_RABK, \
