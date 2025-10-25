@@ -20,6 +20,28 @@
 #    include "timer.h"
 #endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
+/* Per-key tapping term for home row mods */
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // Ring finger (weaker) - longer tapping term
+        case LALT_T(KC_A):
+        case RALT_T(KC_L):
+            return 250;
+        // Pinky finger (weakest) - longest tapping term
+        case LGUI_T(KC_Z):
+        case RGUI_T(KC_SLSH):
+            return 300;
+        // Index and middle fingers (stronger) - shorter tapping term
+        case LSFT_T(KC_S):
+        case RSFT_T(KC_K):
+        case LCTL_T(KC_D):
+        case RCTL_T(KC_J):
+            return 180;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
 enum combos {
     QW_ESC = 0,
     ER_TAB,
@@ -31,24 +53,17 @@ enum combos {
     DOTSLSH_CTRL,
 };
 
-const uint16_t PROGMEM qw_combo[] = {KC_Q, KC_W, COMBO_END};
-const uint16_t PROGMEM er_combo[] = {KC_E, KC_R, COMBO_END};
-const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
-const uint16_t PROGMEM zx_combo[] = {KC_Z, KC_X, COMBO_END};
-const uint16_t PROGMEM ui_combo[] = {KC_U, KC_I, COMBO_END};
-const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
-const uint16_t PROGMEM lquot_combo[] = {KC_L, KC_QUOT, COMBO_END};
+const uint16_t PROGMEM qw_combo[]      = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM er_combo[]      = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM as_combo[]      = {KC_A, KC_S, COMBO_END};
+const uint16_t PROGMEM zx_combo[]      = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM ui_combo[]      = {KC_U, KC_I, COMBO_END};
+const uint16_t PROGMEM op_combo[]      = {KC_O, KC_P, COMBO_END};
+const uint16_t PROGMEM lquot_combo[]   = {KC_L, KC_QUOT, COMBO_END};
 const uint16_t PROGMEM dotslsh_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
 
 combo_t key_combos[] = {
-    [QW_ESC] = COMBO(qw_combo, KC_ESC),
-    [ER_TAB] = COMBO(er_combo, KC_TAB),
-    [AS_SHFT] = COMBO(as_combo, OSM(MOD_LSFT)),
-    [ZX_CTRL] = COMBO(zx_combo, OSM(MOD_LCTL)),
-    [UI_DEL] = COMBO(ui_combo, KC_DEL),
-    [OP_BKSPC] = COMBO(op_combo, KC_BSPC),
-    [LQUOT_SHFT] = COMBO(lquot_combo, OSM(MOD_RSFT)),
-    [DOTSLSH_CTRL] = COMBO(dotslsh_combo, OSM(MOD_RCTL)),
+    [QW_ESC] = COMBO(qw_combo, KC_ESC), [ER_TAB] = COMBO(er_combo, KC_TAB), [AS_SHFT] = COMBO(as_combo, OSM(MOD_LSFT)), [ZX_CTRL] = COMBO(zx_combo, OSM(MOD_LCTL)), [UI_DEL] = COMBO(ui_combo, KC_DEL), [OP_BKSPC] = COMBO(op_combo, KC_BSPC), [LQUOT_SHFT] = COMBO(lquot_combo, OSM(MOD_RSFT)), [DOTSLSH_CTRL] = COMBO(dotslsh_combo, OSM(MOD_RCTL)),
 };
 
 enum dilemma_keymap_layers {
@@ -85,11 +100,11 @@ static uint16_t auto_pointer_layer_timer = 0;
 #endif // !POINTING_DEVICE_ENABLE
 
 // clang-format off
-/** \brief QWERTY layout (3 rows, 10 columns). */
+/** \brief QWERTY layout (3 rows, 10 columns) with home row mods. */
 #define LAYOUT_LAYER_BASE                                                                     \
        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
-       KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L, KC_QUOT, \
-       KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, \
+   LALT_T(KC_A), LSFT_T(KC_S), LCTL_T(KC_D), KC_F,    KC_G,    KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), KC_QUOT, \
+   LGUI_T(KC_Z),    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, RGUI_T(KC_SLSH), \
                                OSL(LAYER_NUMERAL), KC_SPC, KC_ENT, OSL(LAYER_SYMBOLS)
 
 /** Convenience row shorthands. */
@@ -217,7 +232,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_wrapper(
-    POINTER_MOD(HOME_ROW_MOD_GACS(LAYOUT_LAYER_BASE))
+    POINTER_MOD(LAYOUT_LAYER_BASE)
   ),
   [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
   [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
