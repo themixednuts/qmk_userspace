@@ -31,12 +31,14 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         case LGUI_T(KC_Z):
         case RGUI_T(KC_SLSH):
             return 300;
-        // Index and middle fingers (stronger) - shorter tapping term
-        case LSFT_T(KC_S):
-        case RSFT_T(KC_K):
-        case LCTL_T(KC_D):
-        case RCTL_T(KC_J):
+        // Index finger (strongest) - shortest tapping term
+        case LSFT_T(KC_D):
+        case RSFT_T(KC_J):
             return 180;
+        // Middle finger - medium tapping term
+        case LCTL_T(KC_S):
+        case RCTL_T(KC_K):
+            return 200;
         default:
             return TAPPING_TERM;
     }
@@ -103,7 +105,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 /** \brief QWERTY layout (3 rows, 10 columns) with home row mods. */
 #define LAYOUT_LAYER_BASE                                                                     \
        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
-   LALT_T(KC_A), LSFT_T(KC_S), LCTL_T(KC_D), KC_F,    KC_G,    KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), KC_QUOT, \
+   LALT_T(KC_A), LCTL_T(KC_S), LSFT_T(KC_D), KC_F,    KC_G,    KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), KC_QUOT, \
    LGUI_T(KC_Z),    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, RGUI_T(KC_SLSH), \
                                OSL(LAYER_NUMERAL), KC_SPC, KC_ENT, OSL(LAYER_SYMBOLS)
 
@@ -180,7 +182,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     KC_EXLM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, \
     KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, KC_PLUS, KC_RCBR, KC_RBRC, KC_RPRN, KC_RABK, \
-    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, _______________DEAD_HALF_ROW_______________, \
+    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, XXXXXXX, \
                                 KC_GRV, KC_UNDS, _______, XXXXXXX
 
 /**
