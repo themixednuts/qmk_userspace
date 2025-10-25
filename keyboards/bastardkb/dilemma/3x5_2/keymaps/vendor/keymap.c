@@ -23,24 +23,42 @@
 /* Per-key tapping term for home row mods */
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+        // Pinky finger (weakest) - longest tapping term
+        case LGUI_T(KC_A):
+        case RGUI_T(KC_QUOT):
+            return 300;
         // Ring finger (weaker) - longer tapping term
-        case LALT_T(KC_A):
+        case LALT_T(KC_S):
         case RALT_T(KC_L):
             return 250;
-        // Pinky finger (weakest) - longest tapping term
-        case LGUI_T(KC_Z):
-        case RGUI_T(KC_SLSH):
-            return 300;
-        // Index finger (strongest) - shortest tapping term
-        case LSFT_T(KC_D):
-        case RSFT_T(KC_J):
-            return 180;
         // Middle finger - medium tapping term
-        case LCTL_T(KC_S):
+        case LCTL_T(KC_D):
         case RCTL_T(KC_K):
             return 200;
+        // Index finger (strongest) - shortest tapping term
+        case LSFT_T(KC_F):
+        case RSFT_T(KC_J):
+            return 180;
         default:
             return TAPPING_TERM;
+    }
+}
+
+/* Hold on other key press for home row mods */
+bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // Enable hold on other key press for home row mods
+        case LGUI_T(KC_A):
+        case LALT_T(KC_S):
+        case LCTL_T(KC_D):
+        case LSFT_T(KC_F):
+        case RSFT_T(KC_J):
+        case RCTL_T(KC_K):
+        case RALT_T(KC_L):
+        case RGUI_T(KC_QUOT):
+            return true;
+        default:
+            return false;
     }
 }
 
@@ -105,8 +123,8 @@ static uint16_t auto_pointer_layer_timer = 0;
 /** \brief Base layer with home row mods. */
 #define LAYOUT_LAYER_BASE                                                                     \
        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
-   LALT_T(KC_A), LCTL_T(KC_S), LSFT_T(KC_D), KC_F,    KC_G,    KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), KC_QUOT, \
-   LGUI_T(KC_Z),    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, RGUI_T(KC_SLSH), \
+       LGUI_T(KC_A), LALT_T(KC_S), LCTL_T(KC_D), LSFT_T(KC_F),    KC_G,    KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), RGUI_T(KC_QUOT), \
+       KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, \
                                OSL(LAYER_NUMERAL), KC_SPC, KC_ENT, OSL(LAYER_SYMBOLS)
 
 /** Convenience row shorthands. */
@@ -185,7 +203,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     KC_EXLM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, \
     KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, KC_PLUS, KC_RCBR, KC_RBRC, KC_RPRN, KC_RABK, \
-    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT, XXXXXXX, \
+    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, KC_PIPE, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
                                 KC_GRV, KC_UNDS, _______, XXXXXXX
 
 /**
@@ -237,7 +255,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = LAYOUT_wrapper(
-    POINTER_MOD(LAYOUT_LAYER_BASE)
+    LAYOUT_LAYER_BASE
   ),
   [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
   [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
