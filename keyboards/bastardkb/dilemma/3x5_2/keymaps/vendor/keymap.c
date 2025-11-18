@@ -203,7 +203,7 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     KC_EXLM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_PIPE, \
     KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, KC_PLUS, KC_RCBR, KC_RBRC, KC_RPRN, KC_RABK, \
-    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_SLSH\
+    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_SLSH, \
                                 KC_GRV, KC_UNDS, _______, XXXXXXX
 
 /**
