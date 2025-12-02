@@ -26,19 +26,19 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         // Pinky finger (weakest) - longest tapping term
         case LGUI_T(KC_A):
         case RGUI_T(KC_QUOT):
-            return 300;
+            return 280;
         // Ring finger (weaker) - longer tapping term
         case LALT_T(KC_S):
         case RALT_T(KC_L):
-            return 250;
+            return 230;
         // Middle finger - medium tapping term
         case LCTL_T(KC_D):
         case RCTL_T(KC_K):
-            return 200;
+            return 180;
         // Index finger (strongest) - shortest tapping term
         case LSFT_T(KC_F):
         case RSFT_T(KC_J):
-            return 180;
+            return 160;
         default:
             return TAPPING_TERM;
     }
@@ -122,10 +122,10 @@ static uint16_t auto_pointer_layer_timer = 0;
 // clang-format off
 /** \brief Base layer with home row mods. */
 #define LAYOUT_LAYER_BASE                                                                     \
-                KC_Q,        KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
-        LGUI_T(KC_A), LALT_T(KC_S), LCTL_T(KC_D), LSFT_T(KC_F),KC_G,    KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), RGUI_T(KC_QUOT), \
-       KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, \
-                               OSL(LAYER_NUMERAL), KC_SPC, KC_ENT, OSL(LAYER_SYMBOLS)
+                KC_Q,         KC_W,         KC_E,         KC_R, KC_T,         KC_Y,         KC_U,         KC_I,         KC_O,            KC_P, \
+        LGUI_T(KC_A), LALT_T(KC_S), LCTL_T(KC_D), LSFT_T(KC_F), KC_G,         KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), RGUI_T(KC_QUOT), \
+                KC_Z,         KC_X,         KC_C,         KC_V, KC_B,         KC_N,         KC_M,      KC_COMM,       KC_DOT,          KC_SLSH,\
+                                          OSL(LAYER_NUMERAL), KC_SPC,       KC_ENT, OSL(LAYER_SYMBOLS)
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -187,9 +187,9 @@ static uint16_t auto_pointer_layer_timer = 0;
  * `KC_DOT` is duplicated from the base layer.
  */
 #define LAYOUT_LAYER_NUMERAL                                                                  \
-    _______________DEAD_HALF_ROW_______________, KC_MINS,    KC_7,    KC_8,    KC_9, QK_AREP, \
-    KC_LABK, KC_LPRN, KC_LBRC, KC_LCBR, KC_MINS, KC_PLUS,    KC_4,    KC_5,    KC_6, KC_SCLN, \
-    _______________DEAD_HALF_ROW_______________, KC_TILD,    KC_1,    KC_2,    KC_3, QK_REP,  \
+    _______________DEAD_HALF_ROW_______________, KC_MINS,    KC_7,    KC_8,    KC_9, KC_PIPE, \
+    KC_LABK, KC_LPRN, KC_LBRC, KC_LCBR, KC_MINS,  KC_EQL,    KC_4,    KC_5,    KC_6, KC_SCLN, \
+    _______________DEAD_HALF_ROW_______________,  KC_GRV,    KC_1,    KC_2,    KC_3, QK_REP,  \
                                KC_MINS,    KC_0, XXXXXXX,    KC_0
 
 /**
