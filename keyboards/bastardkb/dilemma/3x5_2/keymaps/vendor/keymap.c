@@ -21,6 +21,15 @@
 #endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
 /* Per-key tapping term for home row mods */
+static keypos_t last_key_pos = {0, 0};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        last_key_pos = record->event.key;
+    }
+    return true;
+}
+
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         // Pinky finger (weakest) - longest tapping term
@@ -56,7 +65,15 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
         case RCTL_T(KC_K):
         case RALT_T(KC_L):
         case RGUI_T(KC_QUOT):
-            return true;
+            // Bilateral combinations:
+            // Enable permissive hold ONLY if the other key is on the opposite hand.
+            // Assuming split 3x5_2 (5 cols per side).
+            // Left: cols 0-4, Right: cols 5-9
+            {
+                bool mod_is_left = record->event.key.col < 5;
+                bool other_is_left = last_key_pos.col < 5;
+                return mod_is_left != other_is_left;
+            }
         default:
             return false;
     }
@@ -187,10 +204,10 @@ static uint16_t auto_pointer_layer_timer = 0;
  * `KC_DOT` is duplicated from the base layer.
  */
 #define LAYOUT_LAYER_NUMERAL                                                                  \
-    _______________DEAD_HALF_ROW_______________, KC_MINS,    KC_7,    KC_8,    KC_9, KC_PIPE, \
+    _______________DEAD_HALF_ROW_______________, KC_MINS,    KC_7,    KC_8,    KC_9, KC_BSLS, \
     KC_LABK, KC_LPRN, KC_LBRC, KC_LCBR, KC_MINS,  KC_EQL,    KC_4,    KC_5,    KC_6, KC_SCLN, \
     _______________DEAD_HALF_ROW_______________,  KC_GRV,    KC_1,    KC_2,    KC_3, QK_REP,  \
-                               KC_MINS,    KC_0, XXXXXXX,    KC_0
+                               KC_MINS, XXXXXXX, XXXXXXX,    KC_0
 
 /**
  * \brief Symbols layer.
