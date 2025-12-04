@@ -20,64 +20,8 @@
 #    include "timer.h"
 #endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-/* Per-key tapping term for home row mods */
-static keypos_t last_key_pos = {0, 0};
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        last_key_pos = record->event.key;
-    }
-    return true;
-}
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        // Pinky finger (weakest) - longest tapping term
-        case LGUI_T(KC_A):
-        case RGUI_T(KC_QUOT):
-            return 280;
-        // Ring finger (weaker) - longer tapping term
-        case LALT_T(KC_S):
-        case RALT_T(KC_L):
-            return 230;
-        // Middle finger - medium tapping term
-        case LCTL_T(KC_D):
-        case RCTL_T(KC_K):
-            return 180;
-        // Index finger (strongest) - shortest tapping term
-        case LSFT_T(KC_F):
-        case RSFT_T(KC_J):
-            return 160;
-        default:
-            return TAPPING_TERM;
-    }
-}
-
-/* Hold on other key press for home row mods */
-bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        // Enable hold on other key press for home row mods
-        case LGUI_T(KC_A):
-        case LALT_T(KC_S):
-        case LCTL_T(KC_D):
-        case LSFT_T(KC_F):
-        case RSFT_T(KC_J):
-        case RCTL_T(KC_K):
-        case RALT_T(KC_L):
-        case RGUI_T(KC_QUOT):
-            // Bilateral combinations:
-            // Enable permissive hold ONLY if the other key is on the opposite hand.
-            // Assuming split 3x5_2 (5 cols per side).
-            // Left: cols 0-4, Right: cols 5-9
-            {
-                bool mod_is_left = record->event.key.col < 5;
-                bool other_is_left = last_key_pos.col < 5;
-                return mod_is_left != other_is_left;
-            }
-        default:
-            return false;
-    }
-}
 
 enum combos {
     QW_ESC = 0,

@@ -37,9 +37,7 @@
 #define CIRQUE_PINNACLE_TAP_ENABLE
 
 /* Home Row Mods Configuration */
-#define TAPPING_TERM 180
-#define TAPPING_TERM_PER_KEY
-// PERMISSIVE_HOLD removed - using per-key get_hold_on_other_key_press() instead
-// which provides better control and is recommended by QMK docs for HRM
-#define TAP_FLOW_TERM 150
-// CHORDAL_HOLD removed - conflicts with get_hold_on_other_key_press()
+#define TAPPING_TERM 250
+#define PERMISSIVE_HOLD
+#define CHORDAL_HOLD
+#define FLOW_TAP_TERM 150
