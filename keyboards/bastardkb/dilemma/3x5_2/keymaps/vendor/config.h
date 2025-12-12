@@ -37,7 +37,7 @@
 #define CIRQUE_PINNACLE_TAP_ENABLE
 
 /* Home Row Mods Configuration */
-#define TAPPING_TERM 200
+#define TAPPING_TERM 180
 #define PERMISSIVE_HOLD
 #define CHORDAL_HOLD
 #define FLOW_TAP_TERM 150
