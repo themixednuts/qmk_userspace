@@ -47,6 +47,26 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_ESC_BASE] = ACTION_TAP_DANCE_FN(td_esc_base_finished),
 };
 
+// Double-tap OSM Shift for Caps Word
+static uint16_t last_shift_tap_time = 0;
+#define DOUBLE_TAP_TERM 250  // ms window for double-tap
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        // Check for OSM Shift keys (both left and right)
+        if (keycode == OSM(MOD_LSFT) || keycode == OSM(MOD_RSFT)) {
+            if (timer_elapsed(last_shift_tap_time) < DOUBLE_TAP_TERM) {
+                // Double-tap detected - toggle caps word
+                caps_word_toggle();
+                last_shift_tap_time = 0;  // Reset to prevent triple-tap
+                return false;  // Don't process the shift
+            }
+            last_shift_tap_time = timer_read();
+        }
+    }
+    return true;
+}
+
 
 
 
@@ -56,7 +76,6 @@ enum combos {
     ER_TAB,
     UI_DEL,
     OP_BKSPC,
-    XV_CAPSWORD,
     // Left hand modifiers (Callum-style one-shot)
     AS_SHFT,
     SD_CTRL,
@@ -76,7 +95,6 @@ const uint16_t PROGMEM qw_combo[]      = {KC_Q, KC_W, COMBO_END};
 const uint16_t PROGMEM er_combo[]      = {KC_E, KC_R, COMBO_END};
 const uint16_t PROGMEM ui_combo[]      = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM op_combo[]      = {KC_O, KC_P, COMBO_END};
-const uint16_t PROGMEM xv_combo[]      = {KC_X, KC_V, COMBO_END};
 // Left hand modifier combos
 const uint16_t PROGMEM as_combo[]      = {KC_A, KC_S, COMBO_END};
 const uint16_t PROGMEM sd_combo[]      = {KC_S, KC_D, COMBO_END};
@@ -96,7 +114,6 @@ combo_t key_combos[] = {
     [ER_TAB]      = COMBO(er_combo, KC_TAB),
     [UI_DEL]      = COMBO(ui_combo, KC_DEL),
     [OP_BKSPC]    = COMBO(op_combo, KC_BSPC),
-    [XV_CAPSWORD] = COMBO(xv_combo, CW_TOGG),
     // Left hand modifiers
     [AS_SHFT]     = COMBO(as_combo, OSM(MOD_LSFT)),
     [SD_CTRL]     = COMBO(sd_combo, OSM(MOD_LCTL)),
