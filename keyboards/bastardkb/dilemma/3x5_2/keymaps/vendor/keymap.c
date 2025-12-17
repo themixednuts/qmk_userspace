@@ -20,31 +20,13 @@
 #    include "timer.h"
 #endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-// Tap Dance declarations
-enum {
-    TD_ESC_BASE,
-};
-
-// Forward declare layer enum for tap dance
+// Layer enum
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
     LAYER_NUMERAL,
     LAYER_SYMBOLS,
     LAYER_NAVIGATION,
     LAYER_POINTER,
-};
-
-// Tap Dance definitions
-void td_esc_base_finished(tap_dance_state_t *state, void *user_data) {
-    if (state->count == 1) {
-        tap_code(KC_ESC);
-    } else if (state->count >= 2) {
-        layer_move(LAYER_BASE);
-    }
-}
-
-tap_dance_action_t tap_dance_actions[] = {
-    [TD_ESC_BASE] = ACTION_TAP_DANCE_FN(td_esc_base_finished),
 };
 
 // Double-tap OSM Shift for Caps Word
@@ -76,6 +58,9 @@ enum combos {
     ER_TAB,
     UI_DEL,
     OP_BKSPC,
+    QP_BASE,       // Reset to base layer (base layer keys)
+    QP_BASE_NUM,   // Reset from NUM layer (F1 + -)
+    QP_BASE_SYM,   // Reset from SYM layer (! + `)
     // Left hand modifiers (Callum-style one-shot)
     AS_SHFT,
     SD_CTRL,
@@ -91,10 +76,13 @@ enum combos {
 };
 
 // Utility combos
-const uint16_t PROGMEM qw_combo[]      = {KC_Q, KC_W, COMBO_END};
-const uint16_t PROGMEM er_combo[]      = {KC_E, KC_R, COMBO_END};
-const uint16_t PROGMEM ui_combo[]      = {KC_U, KC_I, COMBO_END};
-const uint16_t PROGMEM op_combo[]      = {KC_O, KC_P, COMBO_END};
+const uint16_t PROGMEM qw_combo[]          = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM er_combo[]          = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM ui_combo[]          = {KC_U, KC_I, COMBO_END};
+const uint16_t PROGMEM op_combo[]          = {KC_O, KC_P, COMBO_END};
+const uint16_t PROGMEM qp_combo[]          = {KC_Q, KC_P, COMBO_END};
+const uint16_t PROGMEM qp_combo_num[]      = {KC_F1, KC_MINS, COMBO_END};   // Q+P positions on NUM
+const uint16_t PROGMEM qp_combo_sym[]      = {KC_EXLM, KC_GRV, COMBO_END};  // Q+P positions on SYM
 // Left hand modifier combos
 const uint16_t PROGMEM as_combo[]      = {KC_A, KC_S, COMBO_END};
 const uint16_t PROGMEM sd_combo[]      = {KC_S, KC_D, COMBO_END};
@@ -110,10 +98,13 @@ const uint16_t PROGMEM comslsh_combo[] = {KC_COMM, KC_SLSH, COMBO_END};
 
 combo_t key_combos[] = {
     // Utility
-    [QW_ESC]      = COMBO(qw_combo, TD(TD_ESC_BASE)),  // tap=Esc, double=base layer
+    [QW_ESC]      = COMBO(qw_combo, KC_ESC),
     [ER_TAB]      = COMBO(er_combo, KC_TAB),
     [UI_DEL]      = COMBO(ui_combo, KC_DEL),
     [OP_BKSPC]    = COMBO(op_combo, KC_BSPC),
+    [QP_BASE]     = COMBO(qp_combo, TO(LAYER_BASE)),      // Q+P on base
+    [QP_BASE_NUM] = COMBO(qp_combo_num, TO(LAYER_BASE)),  // F1+- on NUM
+    [QP_BASE_SYM] = COMBO(qp_combo_sym, TO(LAYER_BASE)),  // !+` on SYM
     // Left hand modifiers
     [AS_SHFT]     = COMBO(as_combo, OSM(MOD_LSFT)),
     [SD_CTRL]     = COMBO(sd_combo, OSM(MOD_LCTL)),
@@ -183,12 +174,12 @@ static uint16_t auto_pointer_layer_timer = 0;
                                KC_BTN2, KC_BTN1, KC_BTN1, KC_BTN2
 
 /**
- * \brief Navigation layer - arrows and page navigation.
+ * \brief Navigation layer - vim-style HJKL arrows.
  */
 #define LAYOUT_LAYER_NAVIGATION                                                               \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
-    _______________DEAD_HALF_ROW_______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
-    _______________DEAD_HALF_ROW_______________,  KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
+    _______________DEAD_HALF_ROW_______________, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, \
+    _______________DEAD_HALF_ROW_______________,  KC_HOME, KC_PGDN, KC_PGUP,  KC_END, KC_INS, \
                                _______, _______,  KC_ENT, KC_BSPC
 
 /**
