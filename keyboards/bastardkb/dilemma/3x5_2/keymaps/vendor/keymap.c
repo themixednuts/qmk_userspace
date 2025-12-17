@@ -198,12 +198,13 @@ static uint16_t auto_pointer_layer_timer = 0;
  *
  * Home row has paired brackets: < { [ ( on left, ) ] } > on right.
  * - and = on index fingers for easy ->, =>, -=, +=
+ * Right thumb goes to NAV layer.
  */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,    KC_CIRC, KC_AMPR, KC_ASTR, KC_TILD,  KC_GRV, \
     KC_LABK, KC_LCBR, KC_LBRC, KC_LPRN, KC_MINS,     KC_EQL, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, \
     KC_BSLS, KC_PIPE, KC_UNDS, KC_PLUS,  KC_GRV,    KC_TILD, KC_SLSH, KC_COLN, KC_SCLN, KC_QUES, \
-                               _______, _______,    _______, XXXXXXX
+                               _______, _______,    _______, OSL(LAYER_NAVIGATION)
 
 /**
  * \brief Add Home Row mod to a layout.
@@ -283,16 +284,11 @@ void matrix_scan_user(void) {
 
 #endif     // POINTING_DEVICE_ENABLE
 
-// Tri-layer: NUM + SYM = NAV (works with OSL)
-layer_state_t layer_state_set_user(layer_state_t state) {
-    // If both NUM and SYM are active, also activate NAV
-    if (layer_state_cmp(state, LAYER_NUMERAL) && layer_state_cmp(state, LAYER_SYMBOLS)) {
-        state = state | (1UL << LAYER_NAVIGATION);
-    }
 #ifdef POINTING_DEVICE_ENABLE
 #    ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
+layer_state_t layer_state_set_user(layer_state_t state) {
     dilemma_set_pointer_sniping_enabled(layer_state_cmp(state, DILEMMA_AUTO_SNIPING_ON_LAYER));
-#    endif
-#endif
     return state;
 }
+#    endif
+#endif
