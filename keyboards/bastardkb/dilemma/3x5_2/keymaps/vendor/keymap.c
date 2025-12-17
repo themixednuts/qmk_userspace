@@ -175,12 +175,13 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 /**
  * \brief Navigation layer - vim-style HJKL arrows.
+ * Outer pinky keys return to base layer.
  */
-#define LAYOUT_LAYER_NAVIGATION                                                               \
-    _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
-    _______________DEAD_HALF_ROW_______________, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_CAPS, \
-    _______________DEAD_HALF_ROW_______________,  KC_HOME, KC_PGDN, KC_PGUP,  KC_END, KC_INS, \
-                               _______, _______,  KC_ENT, KC_BSPC
+#define LAYOUT_LAYER_NAVIGATION                                                                    \
+    TO(LAYER_BASE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(LAYER_BASE), \
+    TO(LAYER_BASE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, TO(LAYER_BASE), \
+    TO(LAYER_BASE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_HOME, KC_PGDN, KC_PGUP,  KC_END, TO(LAYER_BASE), \
+                                      _______, _______,     KC_ENT, KC_BSPC
 
 /**
  * \brief Numeral layer - F-keys on left, numpad on right.
