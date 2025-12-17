@@ -24,34 +24,67 @@
 
 
 enum combos {
+    // Utility combos
     QW_ESC = 0,
     ER_TAB,
-    AS_SHFT,
-    ZX_CTRL,
     UI_DEL,
     OP_BKSPC,
+    // Left hand modifiers (Callum-style one-shot)
+    AS_SHFT,
+    SD_CTRL,
+    DF_ALT,
+    ASD_GUI,
+    ZC_MEH,
+    // Right hand modifiers (Callum-style one-shot)
     LQUOT_SHFT,
-    DOTSLSH_CTRL,
+    KL_CTRL,
+    JK_ALT,
+    KLQ_GUI,
+    COMSLSH_MEH,
 };
 
+// Utility combos
 const uint16_t PROGMEM qw_combo[]      = {KC_Q, KC_W, COMBO_END};
 const uint16_t PROGMEM er_combo[]      = {KC_E, KC_R, COMBO_END};
-const uint16_t PROGMEM as_combo[]      = {KC_A, KC_S, COMBO_END};
-const uint16_t PROGMEM zx_combo[]      = {KC_Z, KC_X, COMBO_END};
 const uint16_t PROGMEM ui_combo[]      = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM op_combo[]      = {KC_O, KC_P, COMBO_END};
+// Left hand modifier combos
+const uint16_t PROGMEM as_combo[]      = {KC_A, KC_S, COMBO_END};
+const uint16_t PROGMEM sd_combo[]      = {KC_S, KC_D, COMBO_END};
+const uint16_t PROGMEM df_combo[]      = {KC_D, KC_F, COMBO_END};
+const uint16_t PROGMEM asd_combo[]     = {KC_A, KC_S, KC_D, COMBO_END};
+const uint16_t PROGMEM zc_combo[]      = {KC_Z, KC_C, COMBO_END};
+// Right hand modifier combos
 const uint16_t PROGMEM lquot_combo[]   = {KC_L, KC_QUOT, COMBO_END};
-const uint16_t PROGMEM dotslsh_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM kl_combo[]      = {KC_K, KC_L, COMBO_END};
+const uint16_t PROGMEM jk_combo[]      = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM klq_combo[]     = {KC_K, KC_L, KC_QUOT, COMBO_END};
+const uint16_t PROGMEM comslsh_combo[] = {KC_COMM, KC_SLSH, COMBO_END};
 
 combo_t key_combos[] = {
-    [QW_ESC] = COMBO(qw_combo, KC_ESC), [ER_TAB] = COMBO(er_combo, KC_TAB), [AS_SHFT] = COMBO(as_combo, OSM(MOD_LSFT)), [ZX_CTRL] = COMBO(zx_combo, OSM(MOD_LCTL)), [UI_DEL] = COMBO(ui_combo, KC_DEL), [OP_BKSPC] = COMBO(op_combo, KC_BSPC), [LQUOT_SHFT] = COMBO(lquot_combo, OSM(MOD_RSFT)), [DOTSLSH_CTRL] = COMBO(dotslsh_combo, OSM(MOD_RCTL)),
+    // Utility
+    [QW_ESC]      = COMBO(qw_combo, KC_ESC),
+    [ER_TAB]      = COMBO(er_combo, KC_TAB),
+    [UI_DEL]      = COMBO(ui_combo, KC_DEL),
+    [OP_BKSPC]    = COMBO(op_combo, KC_BSPC),
+    // Left hand modifiers
+    [AS_SHFT]     = COMBO(as_combo, OSM(MOD_LSFT)),
+    [SD_CTRL]     = COMBO(sd_combo, OSM(MOD_LCTL)),
+    [DF_ALT]      = COMBO(df_combo, OSM(MOD_LALT)),
+    [ASD_GUI]     = COMBO(asd_combo, OSM(MOD_LGUI)),
+    [ZC_MEH]      = COMBO(zc_combo, OSM(MOD_MEH)),
+    // Right hand modifiers
+    [LQUOT_SHFT]  = COMBO(lquot_combo, OSM(MOD_RSFT)),
+    [KL_CTRL]     = COMBO(kl_combo, OSM(MOD_RCTL)),
+    [JK_ALT]      = COMBO(jk_combo, OSM(MOD_RALT)),
+    [KLQ_GUI]     = COMBO(klq_combo, OSM(MOD_RGUI)),
+    [COMSLSH_MEH] = COMBO(comslsh_combo, OSM(MOD_MEH)),
 };
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
     LAYER_NUMERAL,
     LAYER_SYMBOLS,
-    LAYER_FUNCTION,
     LAYER_NAVIGATION,
     LAYER_POINTER,
 };
@@ -81,12 +114,12 @@ static uint16_t auto_pointer_layer_timer = 0;
 #endif // !POINTING_DEVICE_ENABLE
 
 // clang-format off
-/** \brief Base layer with home row mods. */
+/** \brief Base layer - pure QWERTY, no mod-taps. Modifiers via combos. */
 #define LAYOUT_LAYER_BASE                                                                     \
-                KC_Q,         KC_W,         KC_E,         KC_R, KC_T,         KC_Y,         KC_U,         KC_I,         KC_O,            KC_P, \
-        LGUI_T(KC_A), LALT_T(KC_S), LCTL_T(KC_D), LSFT_T(KC_F), KC_G,         KC_H, RSFT_T(KC_J), RCTL_T(KC_K), RALT_T(KC_L), RGUI_T(KC_QUOT), \
-                KC_Z,         KC_X,         KC_C,         KC_V, KC_B,         KC_N,         KC_M,      KC_COMM,       KC_DOT,          KC_SLSH,\
-                                          OSL(LAYER_NUMERAL), KC_SPC,       KC_ENT, OSL(LAYER_SYMBOLS)
+       KC_Q, KC_W, KC_E, KC_R, KC_T,      KC_Y, KC_U, KC_I,    KC_O,   KC_P,    \
+       KC_A, KC_S, KC_D, KC_F, KC_G,      KC_H, KC_J, KC_K,    KC_L,   KC_QUOT, \
+       KC_Z, KC_X, KC_C, KC_V, KC_B,      KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, \
+             OSL(LAYER_NUMERAL), KC_SPC,  KC_ENT, OSL(LAYER_SYMBOLS)
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -103,21 +136,6 @@ static uint16_t auto_pointer_layer_timer = 0;
  * See https://github.com/manna-harbour/miryoku for the original layout.
  */
 
-/**
- * \brief Function layer.
- *
- * Secondary right-hand layer has function keys mirroring the numerals on the
- * primary layer with extras on the pinkie column, plus system keys on the inner
- * column. App is on the tertiary thumb key and other thumb keys are duplicated
- * from the base layer to enable auto-repeat.
- */
-/** \brief Function layer with F-keys. */
-#define LAYOUT_LAYER_FUNCTION                                                                 \
-    _______________DEAD_HALF_ROW_______________, KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, \
-    ______________HOME_ROW_GACS_L______________, KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, \
-    _______________DEAD_HALF_ROW_______________, KC_PAUS,   KC_F1,   KC_F2,   KC_F3,  KC_F10, \
-                               _______, XXXXXXX, XXXXXXX, XXXXXXX
-
 /** \brief Mouse emulation and pointer functions. */
 #define LAYOUT_LAYER_POINTER                                                                  \
     QK_BOOT, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, QK_BOOT, \
@@ -126,46 +144,35 @@ static uint16_t auto_pointer_layer_timer = 0;
                                KC_BTN2, KC_BTN1, KC_BTN1, KC_BTN2
 
 /**
- * \brief Navigation layer.
- *
- * Primary right-hand layer (left home thumb) is navigation and editing. Cursor
- * keys are on the home position, line and page movement below, clipboard above,
- * caps lock and insert on the inner column. Thumb keys are duplicated from the
- * base layer to avoid having to layer change mid edit and to enable auto-repeat.
+ * \brief Navigation layer - arrows and page navigation.
  */
-/** \brief Navigation layer with cursor keys. */
 #define LAYOUT_LAYER_NAVIGATION                                                               \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
-    ______________HOME_ROW_GACS_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
+    _______________DEAD_HALF_ROW_______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
     _______________DEAD_HALF_ROW_______________,  KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
-                               XXXXXXX, _______,  KC_ENT, KC_BSPC
+                               _______, _______,  KC_ENT, KC_BSPC
 
 /**
- * \brief Numeral layout.
- *
- * Primary left-hand layer (right home thumb) is numerals and symbols. Numerals
- * are in the standard numpad locations with symbols in the remaining positions.
- * `KC_DOT` is duplicated from the base layer.
+ * \brief Numeral layer - F-keys on left, numpad on right.
+ * 0 on thumb, QK_REP and QK_AREP on bottom left for easy repeat access.
  */
 #define LAYOUT_LAYER_NUMERAL                                                                  \
-    _______________DEAD_HALF_ROW_______________, KC_MINS,    KC_7,    KC_8,    KC_9, KC_BSLS, \
-    KC_LABK, KC_LPRN, KC_LBRC, KC_LCBR, KC_MINS,  KC_EQL,    KC_4,    KC_5,    KC_6, KC_SCLN, \
-    _______________DEAD_HALF_ROW_______________,  KC_GRV,    KC_1,    KC_2,    KC_3, QK_REP,  \
-                               KC_MINS, XXXXXXX, XXXXXXX,    KC_0
+      KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_SLSH,   KC_7,    KC_8,    KC_9, KC_MINS, \
+      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,    KC_ASTR,   KC_4,    KC_5,    KC_6, KC_PLUS, \
+     KC_F11,  KC_F12,  QK_REP, QK_AREP, CW_TOGG,     KC_EQL,   KC_1,    KC_2,    KC_3,  KC_DOT, \
+                               XXXXXXX, _______,    _______,    KC_0
 
 /**
- * \brief Symbols layer.
+ * \brief Symbols layer - symmetrical brackets for programming.
  *
- * Secondary left-hand layer has shifted symbols in the same locations to reduce
- * chording when using mods with shifted symbols. `KC_LPRN` is duplicated next to
- * `KC_RPRN`.
+ * Home row has paired brackets: < { [ ( on left, ) ] } > on right.
+ * - and = on index fingers for easy ->, =>, -=, +=
  */
-/** \brief Symbols layer with arrow keys on bottom row. */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
-    KC_EXLM, KC_AT, KC_HASH, KC_DOLLAR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_PIPE, \
-    KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, KC_PLUS, KC_RCBR, KC_RBRC, KC_RPRN, KC_RABK, \
-    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, KC_SLSH, \
-                                KC_GRV, KC_UNDS, _______, XXXXXXX
+    KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,    KC_CIRC, KC_AMPR, KC_ASTR, KC_TILD,  KC_GRV, \
+    KC_LABK, KC_LCBR, KC_LBRC, KC_LPRN, KC_MINS,     KC_EQL, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, \
+    KC_BSLS, KC_PIPE, KC_UNDS, KC_PLUS,  KC_GRV,    KC_TILD, KC_SLSH, KC_COLN, KC_SCLN, KC_QUES, \
+                               _______, _______,    _______, XXXXXXX
 
 /**
  * \brief Add Home Row mod to a layout.
@@ -215,14 +222,11 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LAYOUT_wrapper(...) LAYOUT_split_3x5_2(__VA_ARGS__)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [LAYER_BASE] = LAYOUT_wrapper(
-    LAYOUT_LAYER_BASE
-  ),
-  [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
-  [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
+  [LAYER_BASE] = LAYOUT_wrapper(LAYOUT_LAYER_BASE),
   [LAYER_NUMERAL] = LAYOUT_wrapper(LAYOUT_LAYER_NUMERAL),
-  [LAYER_POINTER] = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
   [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
+  [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
+  [LAYER_POINTER] = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
 };
 // clang-format on
 

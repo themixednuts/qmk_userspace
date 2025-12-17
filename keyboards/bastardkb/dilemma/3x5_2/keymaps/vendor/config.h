@@ -18,7 +18,7 @@
 
 #ifdef VIA_ENABLE
 /* VIA configuration. */
-#    define DYNAMIC_KEYMAP_LAYER_COUNT 6
+#    define DYNAMIC_KEYMAP_LAYER_COUNT 5
 #endif // VIA_ENABLE
 
 /* Charybdis-specific features. */
@@ -35,9 +35,3 @@
 #define EXTRA_SHORT_COMBOS
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 #define CIRQUE_PINNACLE_TAP_ENABLE
-
-/* Home Row Mods Configuration */
-#define TAPPING_TERM 180
-#define PERMISSIVE_HOLD
-#define CHORDAL_HOLD
-#define FLOW_TAP_TERM 150
