@@ -175,12 +175,12 @@ static uint16_t auto_pointer_layer_timer = 0;
 
 /**
  * \brief Navigation layer - vim-style HJKL arrows.
- * Outer pinky keys return to base layer.
+ * Q and P positions return to base layer.
  */
 #define LAYOUT_LAYER_NAVIGATION                                                                    \
     TO(LAYER_BASE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(LAYER_BASE), \
-    TO(LAYER_BASE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, TO(LAYER_BASE), \
-    TO(LAYER_BASE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_HOME, KC_PGDN, KC_PGUP,  KC_END, TO(LAYER_BASE), \
+        XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, XXXXXXX,        \
+        XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_HOME, KC_PGDN, KC_PGUP,  KC_END, XXXXXXX,        \
                                       _______, _______,     KC_ENT, KC_BSPC
 
 /**
