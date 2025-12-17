@@ -20,6 +20,33 @@
 #    include "timer.h"
 #endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
+// Tap Dance declarations
+enum {
+    TD_ESC_BASE,
+};
+
+// Forward declare layer enum for tap dance
+enum dilemma_keymap_layers {
+    LAYER_BASE = 0,
+    LAYER_NUMERAL,
+    LAYER_SYMBOLS,
+    LAYER_NAVIGATION,
+    LAYER_POINTER,
+};
+
+// Tap Dance definitions
+void td_esc_base_finished(tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        tap_code(KC_ESC);
+    } else if (state->count >= 2) {
+        layer_move(LAYER_BASE);
+    }
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_ESC_BASE] = ACTION_TAP_DANCE_FN(td_esc_base_finished),
+};
+
 
 
 
@@ -29,6 +56,7 @@ enum combos {
     ER_TAB,
     UI_DEL,
     OP_BKSPC,
+    XV_CAPSWORD,
     // Left hand modifiers (Callum-style one-shot)
     AS_SHFT,
     SD_CTRL,
@@ -48,6 +76,7 @@ const uint16_t PROGMEM qw_combo[]      = {KC_Q, KC_W, COMBO_END};
 const uint16_t PROGMEM er_combo[]      = {KC_E, KC_R, COMBO_END};
 const uint16_t PROGMEM ui_combo[]      = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM op_combo[]      = {KC_O, KC_P, COMBO_END};
+const uint16_t PROGMEM xv_combo[]      = {KC_X, KC_V, COMBO_END};
 // Left hand modifier combos
 const uint16_t PROGMEM as_combo[]      = {KC_A, KC_S, COMBO_END};
 const uint16_t PROGMEM sd_combo[]      = {KC_S, KC_D, COMBO_END};
@@ -63,10 +92,11 @@ const uint16_t PROGMEM comslsh_combo[] = {KC_COMM, KC_SLSH, COMBO_END};
 
 combo_t key_combos[] = {
     // Utility
-    [QW_ESC]      = COMBO(qw_combo, KC_ESC),
+    [QW_ESC]      = COMBO(qw_combo, TD(TD_ESC_BASE)),  // tap=Esc, double=base layer
     [ER_TAB]      = COMBO(er_combo, KC_TAB),
     [UI_DEL]      = COMBO(ui_combo, KC_DEL),
     [OP_BKSPC]    = COMBO(op_combo, KC_BSPC),
+    [XV_CAPSWORD] = COMBO(xv_combo, CW_TOGG),
     // Left hand modifiers
     [AS_SHFT]     = COMBO(as_combo, OSM(MOD_LSFT)),
     [SD_CTRL]     = COMBO(sd_combo, OSM(MOD_LCTL)),
@@ -79,14 +109,6 @@ combo_t key_combos[] = {
     [JK_ALT]      = COMBO(jk_combo, OSM(MOD_RALT)),
     [KLQ_GUI]     = COMBO(klq_combo, OSM(MOD_RGUI)),
     [COMSLSH_MEH] = COMBO(comslsh_combo, OSM(MOD_MEH)),
-};
-
-enum dilemma_keymap_layers {
-    LAYER_BASE = 0,
-    LAYER_NUMERAL,
-    LAYER_SYMBOLS,
-    LAYER_NAVIGATION,
-    LAYER_POINTER,
 };
 
 // Automatically enable sniping-mode on the pointer layer.
@@ -250,10 +272,18 @@ void matrix_scan_user(void) {
 }
 #    endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-#    ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
+#endif     // POINTING_DEVICE_ENABLE
+
+// Tri-layer: NUM + SYM = NAV (works with OSL)
 layer_state_t layer_state_set_user(layer_state_t state) {
+    // If both NUM and SYM are active, also activate NAV
+    if (layer_state_cmp(state, LAYER_NUMERAL) && layer_state_cmp(state, LAYER_SYMBOLS)) {
+        state = state | (1UL << LAYER_NAVIGATION);
+    }
+#ifdef POINTING_DEVICE_ENABLE
+#    ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
     dilemma_set_pointer_sniping_enabled(layer_state_cmp(state, DILEMMA_AUTO_SNIPING_ON_LAYER));
+#    endif
+#endif
     return state;
 }
-#    endif // DILEMMA_AUTO_SNIPING_ON_LAYER
-#endif     // POINTING_DEVICE_ENABLE
