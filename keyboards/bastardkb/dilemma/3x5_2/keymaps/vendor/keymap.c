@@ -134,8 +134,6 @@ static uint16_t auto_pointer_layer_timer = 0;
 #    endif // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_THRESHOLD
 #endif     // DILEMMA_AUTO_POINTER_LAYER_TRIGGER_ENABLE
 
-#define _L_PTR(KC) LT(LAYER_POINTER, KC)
-
 #ifndef POINTING_DEVICE_ENABLE
 #    define DRGSCRL KC_NO
 #    define DPI_MOD KC_NO
@@ -178,20 +176,20 @@ static uint16_t auto_pointer_layer_timer = 0;
  * Q and P positions return to base layer.
  */
 #define LAYOUT_LAYER_NAVIGATION                                                                    \
-    TO(LAYER_BASE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(LAYER_BASE), \
-        XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, XXXXXXX,        \
-        XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_HOME, KC_PGDN, KC_PGUP,  KC_END, XXXXXXX,        \
-                                      _______, _______,     KC_ENT, KC_BSPC
+    TO(LAYER_BASE), KC_VOLD, KC_MUTE, KC_VOLU, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(LAYER_BASE), \
+           KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,    KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,       XXXXXXX, \
+           C(KC_Z), C(KC_X), C(KC_C), C(KC_V), XXXXXXX,    KC_HOME, KC_PGDN, KC_PGUP,  KC_END,       XXXXXXX, \
+                                      _______, _______,    KC_ENT, KC_BSPC
 
 /**
  * \brief Numeral layer - F-keys on left, numpad on right.
  * 0 on thumb, QK_REP and QK_AREP on bottom left for easy repeat access.
  */
 #define LAYOUT_LAYER_NUMERAL                                                                  \
-      KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_SLSH,   KC_7,    KC_8,    KC_9, KC_MINS, \
-      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,    KC_ASTR,   KC_4,    KC_5,    KC_6, KC_PLUS, \
-     KC_F11,  KC_F12,  QK_REP, QK_AREP, CW_TOGG,     KC_EQL,   KC_1,    KC_2,    KC_3,  KC_DOT, \
-                               XXXXXXX, _______,    _______,    KC_0
+      KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_SLSH, KC_7, KC_8, KC_9, KC_MINS, \
+      KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,    KC_ASTR, KC_4, KC_5, KC_6, KC_PLUS, \
+     KC_F11,  KC_F12,  QK_REP, QK_AREP, CW_TOGG,     KC_EQL, KC_1, KC_2, KC_3,  KC_DOT, \
+                               XXXXXXX, _______,    _______, KC_0
 
 /**
  * \brief Symbols layer - symmetrical brackets for programming.
@@ -203,53 +201,8 @@ static uint16_t auto_pointer_layer_timer = 0;
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,    KC_CIRC, KC_AMPR, KC_ASTR, KC_TILD,  KC_GRV, \
     KC_LABK, KC_LCBR, KC_LBRC, KC_LPRN, KC_MINS,     KC_EQL, KC_RPRN, KC_RBRC, KC_RCBR, KC_RABK, \
-    KC_BSLS, KC_PIPE, KC_UNDS, KC_PLUS,  KC_GRV,    KC_TILD, KC_SLSH, KC_COLN, KC_SCLN, KC_QUES, \
+    KC_BSLS, KC_PIPE, KC_UNDS, KC_PLUS, XXXXXXX,    XXXXXXX, KC_SLSH, KC_COLN, KC_SCLN, KC_QUES, \
                                _______, _______,    _______, OSL(LAYER_NAVIGATION)
-
-/**
- * \brief Add Home Row mod to a layout.
- *
- * Expects a 10-key per row layout.  Adds support for GACS (Gui, Alt, Ctl, Shift)
- * home row.  The layout passed in parameter must contain at least 20 keycodes.
- *
- * This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
- *
- *     HOME_ROW_MOD_GACS(LAYER_ALPHAS_QWERTY)
- */
-#define _HOME_ROW_MOD_GACS(                                            \
-    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
-    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
-    ...)                                                               \
-             L00,         L01,         L02,         L03,         L04,  \
-             R05,         R06,         R07,         R08,         R09,  \
-      LGUI_T(L10), LALT_T(L11), LCTL_T(L12), LSFT_T(L13),        L14,  \
-             R15,  RSFT_T(R16), RCTL_T(R17), RALT_T(R18), RGUI_T(R19), \
-      __VA_ARGS__
-#define HOME_ROW_MOD_GACS(...) _HOME_ROW_MOD_GACS(__VA_ARGS__)
-
-/**
- * \brief Add pointer layer keys to a layout.
- *
- * Expects a 10-key per row layout.  The layout passed in parameter must contain
- * at least 30 keycodes.
- *
- * This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
- *
- *     POINTER_MOD(LAYER_ALPHAS_QWERTY)
- */
-#define _POINTER_MOD(                                                  \
-    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
-    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
-    L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
-    ...)                                                               \
-             L00,         L01,         L02,         L03,         L04,  \
-             R05,         R06,         R07,         R08,         R09,  \
-             L10,         L11,         L12,         L13,         L14,  \
-             R15,         R16,         R17,         R18,         R19,  \
-      _L_PTR(L20),        L21,         L22,         L23,         L24,  \
-             R25,         R26,         R27,         R28,  _L_PTR(R29), \
-      __VA_ARGS__
-#define POINTER_MOD(...) _POINTER_MOD(__VA_ARGS__)
 
 #define LAYOUT_wrapper(...) LAYOUT_split_3x5_2(__VA_ARGS__)
 
